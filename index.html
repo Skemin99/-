@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551799562881984"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイクラ全実績完全攻略 | MC Achievements Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --card-bg: #2a2a2a;
+            --text-main: #ffffff;
+            --text-sub: #aaaaaa;
+            --accent-green: #56ae38; /* 一般/農業 */
+            --accent-red: #d32f2f;   /* ネザー */
+            --accent-purple: #ab47bc; /* エンド */
+            --accent-blue: #0288d1;   /* 冒険 */
+            --accent-gold: #ffd700;
+        }
+
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(rgba(30, 30, 30, 0.9), rgba(30, 30, 30, 0.9)),
+                url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ヘッダーエリア */
+        header {
+            background: url('https://assets.codepen.io/13471/mc-panorama.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        
+        /* 背景を暗くするオーバーレイ */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            text-shadow: 4px 4px 0 #000;
+            letter-spacing: 2px;
+        }
+
+        p.subtitle {
+            color: #ddd;
+            font-size: 1.2rem;
+            text-shadow: 2px 2px 0 #000;
+            margin-top: 10px;
+        }
+
+        /* ナビゲーションタブ */
+        .nav-container {
+            background-color: #111;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 5px rgba(0,0,0,0.3);
+            overflow-x: auto; /* スマホで横スクロール */
+            white-space: nowrap;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            min-width: 600px; /* 横スクロール確保 */
+        }
+
+        button.filter-btn {
+            background: transparent;
+            border: none;
+            color: #888;
+            padding: 15px 25px;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 4px solid transparent;
+        }
+
+        button.filter-btn:hover {
+            color: #fff;
+            background-color: #333;
+        }
+
+        /* 各タブのアクティブ色 */
+        button.filter-btn.active.all { border-bottom-color: white; color: white; }
+        button.filter-btn.active.story { border-bottom-color: var(--accent-green); color: var(--accent-green); }
+        button.filter-btn.active.nether { border-bottom-color: var(--accent-red); color: var(--accent-red); }
+        button.filter-btn.active.end { border-bottom-color: var(--accent-purple); color: var(--accent-purple); }
+        button.filter-btn.active.adventure { border-bottom-color: var(--accent-blue); color: var(--accent-blue); }
+        button.filter-btn.active.husbandry { border-bottom-color: #fbc02d; color: #fbc02d; }
+
+        /* コンテンツエリア */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            padding-bottom: 100px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        /* カードデザイン */
+        .card {
+            background-color: var(--card-bg);
+            border: 2px solid #444;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            border-color: #777;
+        }
+
+        /* カテゴリごとのカード枠色変化 */
+        .card[data-cat="story"]:hover { border-color: var(--accent-green); }
+        .card[data-cat="nether"]:hover { border-color: var(--accent-red); }
+        .card[data-cat="end"]:hover { border-color: var(--accent-purple); }
+        .card[data-cat="adventure"]:hover { border-color: var(--accent-blue); }
+        .card[data-cat="husbandry"]:hover { border-color: #fbc02d; }
+
+        .icon-wrapper {
+            flex-shrink: 0;
+            width: 50px;
+            height: 50px;
+            background: #000;
+            border: 2px solid #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-wrapper img {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+        }
+
+        .info {
+            flex-grow: 1;
+        }
+
+        .info h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            line-height: 1.4;
+        }
+
+        .info p {
+            margin: 5px 0 0;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* 難易度バッジ（仮） */
+        .badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: #444;
+            color: #fff;
+        }
+
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #222;
+            border: 2px solid #fff;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 0;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            background: #333;
+            padding: 15px 20px;
+            border-bottom: 2px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #888;
+            line-height: 0.5;
+        }
+        .close-btn:hover { color: #fff; }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .strategy-section {
+            background: #2c2c2c;
+            padding: 20px;
+            border-left: 5px solid var(--accent-green);
+            margin-top: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .strategy-section h3 {
+            margin-top: 0;
+            color: #fff;
+        }
+
+        .ad-space {
+            margin-top: 20px;
+            background: #111;
+            color: #555;
+            text-align: center;
+            padding: 20px;
+            border: 1px dashed #444;
+            font-size: 0.8rem;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>MINECRAFT GUIDE</h1>
+        <p class="subtitle">全実績・進捗 達成条件＆完全攻略データベース</p>
+    </div>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1551799562881984"
+     crossorigin="anonymous"></script>
+</header>
+
+<div class="nav-container">
+    <nav>
+        <button class="filter-btn active all" onclick="filterSelection('all')">すべて表示</button>
+        <button class="filter-btn story" onclick="filterSelection('story')">マインクラフト</button>
+        <button class="filter-btn nether" onclick="filterSelection('nether')">ネザー</button>
+        <button class="filter-btn end" onclick="filterSelection('end')">ジ・エンド</button>
+        <button class="filter-btn adventure" onclick="filterSelection('adventure')">冒険</button>
+        <button class="filter-btn husbandry" onclick="filterSelection('husbandry')">農業・動物</button>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="achievement-grid" id="grid">
+        </div>
+</div>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="mTitle"><img id="mIcon" src="" width="32"> タイトル</h2>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="mDesc" style="color:#ccc; font-size:1.1rem;"></p>
+            
+            <div class="strategy-section" id="mStrategyBox">
+                <h3>🛠 攻略のヒント</h3>
+                <p id="mStrategy">ここに攻略法が表示されます。</p>
+            </div>
+
+            <div class="ad-space">
+                [ここにGoogle AdSenseやAmazonアフィリエイトリンクを配置]<br>
+                例: 快適なマイクラライフに！おすすめゲーミングPC特集
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ▼▼▼ ここがデータの核です。実績を追加する場合はここを増やします ▼▼▼
+    const achievements = [
+// --- STORY (マインクラフト) ---
+        { id: "s1", title: "マインクラフト", cat: "story", desc: "作業台を作る", icon: "Crafting_Table", 
+          strat: "冒険の始まりです。まずは木材を手に入れましょう。", 
+          steps: ["近くの木を素手で殴り、原木を1つ入手する。", "インベントリを開き（Eキー）、原木を板材4つにクラフトする。", "板材4つを2x2のクラフト枠すべてに置いて、**作業台**を作成する。"] 
+        },
+        { id: "s2", title: "石の時代", cat: "story", desc: "新しいツルハシを使って丸石を採掘する", icon: "Stone_Pickaxe", 
+          strat: "木のツルハシを作って、石を採掘します。木のツルハシは耐久度が低いので注意。", 
+          steps: ["作業台で棒と板材を使って「**木のツルハシ**」を作る。", "地面を掘って石ブロックを採掘し、**丸石**を入手する。", "丸石3つと棒2つで**石のツルハシ**を作成する。"] 
+        },
+        { id: "s3", title: "アップグレード", cat: "story", desc: "より良いツルハシを作る", icon: "Iron_Pickaxe", 
+          strat: "石のツルハシで採掘できる**鉄鉱石**がターゲットです。かまどで精錬しましょう。", 
+          steps: ["丸石8個で**かまど**を作る。", "石のツルハシで**鉄鉱石**を掘る。", "かまどで鉄鉱石を精錬し、**鉄のツルハシ**を作成する。"] 
+        },
+        { id: "s4", title: "金属を手に入れる", cat: "story", desc: "鉄の延べ棒を精錬する", icon: "Iron_Ingot", 
+          strat: "燃料には木炭（原木をかまどで焼く）や石炭を使えます。大量の鉄は冒険の必需品です。", 
+          steps: ["鉄鉱石をかまどで精錬する。", "**鉄の延べ棒**を入手する。"] 
+        },
+        { id: "s5", title: "装備せよ", cat: "story", desc: "鉄の防具で身を固める", icon: "Iron_Chestplate", 
+          strat: "鉄の延べ棒を合計**24個**使用します。フル装備で敵からのダメージを軽減できます。", 
+          steps: ["鉄の延べ棒24個を集める。", "作業台で**鉄の防具一式（ヘルメット、チェストプレート、レギンス、ブーツ）**を作成し、すべて装備する。"] 
+        },
+        { id: "s6", title: "ホットな話題", cat: "story", desc: "かまどを作る", icon: "Furnace", 
+          strat: "丸石を8個集め、作業台の中心を空けて囲むように配置します。精錬と料理に欠かせません。", 
+          steps: ["**丸石を8個**集める。", "作業台で**かまど**を作成する。"] 
+        },
+        { id: "s7", title: "ダイヤモンド！", cat: "story", desc: "ダイヤモンドを入手する", icon: "Diamond", 
+          strat: "**Y座標-58**付近の**ブランチマイニング**が最も効率的です。**鉄のツルハシ**では採掘できません。", 
+          steps: ["**鉄のツルハシ**以上のツルハシを用意する（必須）。", "**Y座標 -58** 付近まで掘り進む。", "ブランチマイニング（枝掘り）を行い、**ダイヤモンド鉱石**を見つける。"] 
+        },
+        { id: "s8", title: "黒曜石で覆う", cat: "story", desc: "黒曜石を手に入れる", icon: "Obsidian", 
+          strat: "**ダイヤモンドのツルハシ**でのみ採掘可能です。溶岩源に水をかけると生成されます。", 
+          steps: ["**ダイヤモンドのツルハシ**を用意する。", "溶岩源を見つけ、水バケツを使って**黒曜石**に変える。", "黒曜石を採掘する。"] 
+        },
+        { id: "s9", title: "エンチャントの使い手", cat: "story", desc: "エンチャントテーブルを作る", icon: "Enchanting_Table", 
+          strat: "**ダイヤモンド2個**、**黒曜石4個**、**本1冊**が必要です。強いエンチャントにはさらに**本棚**が必要です。", 
+          steps: ["ダイヤモンド2個、黒曜石4個、本1冊を集める。", "作業台で**エンチャントテーブル**を作成する。"] 
+        },
+        { id: "s10", title: "不滅の炎", cat: "story", desc: "ネザーポータルを作る", icon: "Nether_Portal", 
+          strat: "黒曜石を10個で枠を作り、**火打ち石と打ち金**で着火します。", 
+          steps: ["黒曜石10個と火打ち石と打ち金を用意する。", "縦5マス×横4マス（内径縦3マス×横2マス）の枠を組み、**点火**する。"] 
+        },
+        { id: "s11", title: "レッドストーン・ラディカル", cat: "story", desc: "レッドストーンダストを入手する", icon: "Redstone_Dust", 
+          strat: "Y座標-58付近を採掘すれば容易に見つかります。複雑な回路を作るのに使われます。", 
+          steps: ["鉄のツルハシ以上で**レッドストーン鉱石**を採掘する。", "**レッドストーンダスト**を入手する。"] 
+        },
+        { id: "s12", title: "本とる", cat: "story", desc: "本棚を作る", icon: "Bookshelf", 
+          strat: "エンチャントテーブルの周りに置くと、より強力なエンチャントができるようになります。", 
+          steps: ["木材の板材6個と本3冊を集める。", "作業台で**本棚**を作成する。"] 
+        },
+        { id: "s13", title: "洞窟探検家", cat: "story", desc: "地上と洞窟、水中にベッドを置く", icon: "Bed", 
+          strat: "「洞窟内」は**Y=0以下の洞窟**、「水中」は**ガラスなどで空間**を作りその中にベッドを設置して寝る必要があります。", 
+          steps: ["地上にベッドを設置し寝る。", "Y=0以下の洞窟内にベッドを設置し寝る。", "水中に空間を作り、ベッドを設置し寝る。"] 
+        },
+        { id: "s14", title: "石に刻まれた遺産", cat: "story", desc: "スカルクセンサーを採掘する", icon: "Sculk_Sensor", 
+          strat: "スカルクセンサーは**シルクタッチのツルハシ**がないと、経験値オーブになってしまいアイテム化しません。", 
+          steps: ["**シルクタッチ**のエンチャントが付いたツルハシを用意する。", "ディープダークバイオームを探す。", "スカルクセンサーを採掘する。"] 
+        },
+        { id: "s15", title: "ディープダーク", cat: "story", desc: "ディープダークに足を踏み入れる", icon: "Deepslate", 
+          strat: "Y=-1からY=-64の間にあるバイオームです。静かに探索しないと**ウォーデン**が出現します。", 
+          steps: ["Y=0以下の深部へ降りる。", "**スカルクブロック**が広がる**ディープダークバイオーム**を探し、足を踏み入れる。"] 
+        },
+        { id: "s16", title: "古代の都市", cat: "story", desc: "古代の都市を探す", icon: "Sculk_Catalyst", 
+          strat: "ディープダークバイオーム内にある巨大な構造物です。宝箱にはレアなアイテムがあります。", 
+          steps: ["ディープダークバイオーム内で**古代の都市**を探す。", "都市の中心部に足を踏み入れる。"] 
+        },
+        { id: "s17", title: "地底の匠", cat: "story", desc: "ドリップストーンブロックと大釜で水を満たす", icon: "Cauldron", 
+          strat: "ドリップストーンの先端に水滴が落ち、下の**大釜**に溜まるのを待ちます。自動水源として利用できます。", 
+          steps: ["上部に水源、下にドリップストーンの先端、さらに下に**大釜**を設置する。", "大釜に水が溜まるのを待つ。"] 
+        },
+        { id: "s18", title: "アメジストでキラキラ", cat: "story", desc: "アメジストの塊を入手する", icon: "Amethyst_Shard", 
+          strat: "アメジストのジオード（地下の球状構造）を見つけます。ダイヤツルハシ以上で採掘可能です。", 
+          steps: ["アメジストのジオードを見つける。", "完全に成長した**アメジストの塊**を採掘する。"] 
+        },
+        { id: "s19", title: "銅の時代", cat: "story", desc: "避雷針を作る", icon: "Lightning_Rod", 
+          strat: "**銅のインゴット3つ**を縦に並べて作成します。雷を安全な場所に誘導できます。", 
+          steps: ["銅鉱石を採掘し、精錬して**銅のインゴット3つ**を用意する。", "作業台で縦に並べて**避雷針**を作成する。"] 
+        },
+        { id: "s20", title: "船を降りろ！", cat: "story", desc: "海底神殿を探し、ガーディアンを倒す", icon: "Prismarine_Shard", 
+          strat: "海底神殿の内部にいる**3体のエルダーガーディアン**を倒せば達成です。水中戦の準備が重要。", 
+          steps: ["水中呼吸のポーションや水中歩行のブーツを用意する。", "**海底神殿**を見つける。", "神殿内の**3体のエルダーガーディアン**を倒す。"] 
+        },
+        // --- STORY (進捗：目標) ---
+        { id: "sg1", title: "ブレイズと戦う", cat: "story", desc: "ブレイズロッドを入手する", icon: "Blaze_Rod", 
+          strat: "ネザー要塞でスポーンする**ブレイズ**を倒します。ネザーウォートの栽培にも使います。", 
+          steps: ["ネザー要塞を探す。", "ブレイズスポナーを見つけ、**ブレイズ**を倒して**ブレイズロッド**を入手する。"] 
+        },
+        { id: "sg2", title: "目の前で", cat: "story", desc: "エンダーアイを作る", icon: "Ender_Eye", 
+          strat: "エンダーパールとブレイズパウダーをクラフトします。エンドポータルを探すのに使います。", 
+          steps: ["エンダーマンから**エンダーパール**を集める。", "ブレイズロッドをクラフトして**ブレイズパウダー**にする。", "**エンダーアイ**をクラフトする。"] 
+        },
+        { id: "sg3", title: "エンドの呼び声", cat: "story", desc: "エンダーアイを投げて要塞を見つける", icon: "Ender_Eye", 
+          strat: "エンダーアイを投げると、**要塞の方向**へ飛んでいきます。何度か投げて場所を特定しましょう。", 
+          steps: ["**エンダーアイ**を手に持ち、右クリックで投げる。", "飛んでいった方向へ進み、**地下の要塞**を見つける。"] 
+        },
+        // --- STORY (進捗：挑戦) ---
+        { id: "sc1", title: "おしまい？", cat: "story", desc: "ジ・エンドに行く", icon: "End_Stone", 
+          strat: "要塞内の**エンドポータル**を**12個のエンダーアイ**で起動させます。ポータルをくぐると達成です。", 
+          steps: ["要塞内の**ポータルルーム**を見つける。", "ポータルフレームに**エンダーアイ**をはめ込む。", "開いたポータルをくぐる。"] 
+        },
+
+// --- NETHER (ネザー) ---
+        { id: "n10", title: "さらに深く", cat: "nether", desc: "ネザーポータルを建設して点火し、中に入る", icon: "Flint_and_Steel", 
+          strat: "黒曜石最低10個で枠を作り、**火打ち石と打ち金**で着火します。", 
+          steps: ["黒曜石10個と火打ち石と打ち金を用意する。", "ポータルの枠を組み、**点火**する。", "ポータルの中に**数秒**立ち続ける。"] 
+        },
+        { id: "n11", title: "差出人に返送", cat: "nether", desc: "火の玉でガストを倒す", icon: "Fire_Charge", 
+          strat: "ガストが撃ってきた火の玉を、タイミングよく**剣や弓**などで打ち返します。", 
+          steps: ["ガストに遭遇する。", "ガストの火の玉が近づいてきたら、**剣などで火の玉を叩き返す**。", "反射した火の玉でガストを倒す。"] 
+        },
+        { id: "n12", title: "あの頃はよかった", cat: "nether", desc: "荒廃した要塞の遺跡に入る", icon: "Bastion_Remnant_Chest", 
+          strat: "**ピグリン要塞**（巨大な黒っぽい構造物）を見つけて、中に入ると達成です。ピグリンの攻撃に注意。", 
+          steps: ["**荒廃した要塞の遺跡**（Bastion Remnant）を探す。", "要塞の中に入る。"] 
+        },
+        { id: "n13", title: "深淵に隠れて", cat: "nether", desc: "古代の残骸を入手する", icon: "Ancient_Debris", 
+          strat: "ネザーの**Y=15**付近で**ベッド爆破**を行うのが最も効率的です。爆発で周囲のネザーラックを破壊し、古代の残骸を露出させます。", 
+          steps: ["ベッドを大量に用意する。", "ネザーの**Y座標 15** 付近まで掘り進む。", "横穴を掘り、奥にベッドを設置して**爆破**する。", "**古代の残骸**を採掘する（ダイヤツルハシ必須）。"] 
+        },
+        { id: "n14", title: "瓦礫まみれ", cat: "nether", desc: "ネザライトフル装備を手に入れる", icon: "Netherite_Chestplate", 
+          strat: "ダイヤモンド装備を**鍛冶台**で**ネザライトインゴット**を使って強化します。", 
+          steps: ["古代の残骸を精錬し、**ネザライトインゴット**を作る。", "ダイヤモンド防具一式（4箇所）を用意する。", "鍛冶台で一つずつ**ネザライト装備**にアップグレードし、すべて装備する。"] 
+        },
+        { id: "n15", title: "亜空間バブル", cat: "nether", desc: "ネザーを使ってオーバーワールドを7km移動する", icon: "Map", 
+          strat: "ネザーでの**1ブロックの移動**は、現世の**8ブロック**に相当します。ネザーで**875ブロック**以上移動し、ゲートを開けば達成。", 
+          steps: ["ネザーポータルを2つ用意する（現世の座標を記録）。", "ネザーで**875ブロック**以上離れた場所に移動する。", "そこで新しいポータルを開き、現世に戻る。"] 
+        },
+        { id: "n16", title: "不安な同盟", cat: "nether", desc: "ガストをオーバーワールドへ連れて行き、倒す", icon: "Ghast_Tear", 
+          strat: "巨大なネザーゲートを作り、**ガストを誘導**して現世へ送り、そこで倒します。現世なら反射が容易です。", 
+          steps: ["ネザー要塞の近くに巨大なネザーゲート（最低10x10マス程度）を作る。", "ガストをポータルに誘導して現世へ連れて行く。", "現世でガストを倒す。"] 
+        },
+        { id: "n17", title: "猛烈なカクテル", cat: "nether", desc: "同時にすべてのポーション効果を持つ", icon: "Potion", 
+          strat: "ウィザー、コンジット、ビーコン、ポーション、矢などを組み合わせて**20種類以上**のポーション効果を同時に得ます。計画が必要です。", 
+          steps: ["**ビーコン**（パワー4）を設置し、主要な効果を得る。", "**ウィザー**を倒して**ネザースター**を入手し、ビーコンを起動する。", "残りの効果（暗視、水中呼吸、再生など）をポーションや矢で得る。"] 
+        },
+        { id: "n18", title: "ネザーの金鉱", cat: "nether", desc: "ネザー金鉱石を精錬する", icon: "Gold_Ingot", 
+          strat: "ネザーの壁にある金鉱石を掘り、かまどで精錬します。燃料が必要です。", 
+          steps: ["**ネザー金鉱石**を採掘する。", "かまどで精錬し、**金の延べ棒**を入手する。"] 
+        },
+        { id: "n19", title: "ピグリンと取引", cat: "nether", desc: "ピグリンと物々交換する", icon: "Gold_Ingot", 
+          strat: "**金の延べ棒**をピグリンに投げ与えます。ピグリンから何かアイテムを受け取れば達成です。", 
+          steps: ["金の延べ棒を用意する。", "**ピグリン**に金の延べ棒を投げる。", "ピグリンがアイテムを投げ返すのを待つ。"] 
+        },
+        { id: "n20", title: "魂の炎", cat: "nether", desc: "ソウルサンド峡谷でソウル・スピードのエンチャント本を見つける", icon: "Soul_Speed_Boots", 
+          strat: "ピグリンとの**物々交換**や、荒廃した要塞のチェストから入手します。氷の上で効果を発揮します。", 
+          steps: ["金の延べ棒を大量に用意する。", "ピグリンと物々交換し、**ソウル・スピード**のエンチャント本を入手する。"] 
+        },
+        { id: "n21", title: "帰る場所", cat: "nether", desc: "ネザーからオーバーワールドへテレポートする", icon: "Nether_Portal", 
+          strat: "ネザーにいる状態で、ポータルをくぐって現世に戻れば達成です。", 
+          steps: ["ネザーポータルをくぐる。"] 
+        },
+        { id: "n22", title: "ネザーの探検家", cat: "nether", desc: "ネザーのすべてのバイオームを訪れる", icon: "Netherite_Pickaxe", 
+          strat: "**真紅の森、歪んだ森、ソウルサンドの谷、玄武岩の三角州、ネザーの荒野**の5種類すべてに足を踏み入れます。", 
+          steps: ["ネザーの**5つのバイオーム**すべてに訪れる。"] 
+        },
+        { id: "n23", title: "ネザーの金鉱", cat: "nether", desc: "ネザー金鉱石を精錬する", icon: "Gold_Ingot", 
+          strat: "ネザーの壁にある金鉱石を掘り、かまどで精錬します。", 
+          steps: ["ネザー金鉱石を採掘する。", "かまどで精錬し、**金の延べ棒**を入手する。"] 
+        },
+        { id: "n24", title: "ピグリンと取引", cat: "nether", desc: "ピグリンと物々交換する", icon: "Gold_Ingot", 
+          strat: "金の延べ棒をピグリンに与えます。ピグリンから何かアイテムを受け取れば達成です。", 
+          steps: ["金の延べ棒を用意する。", "ピグリンに金の延べ棒を投げる。"] 
+        },
+        { id: "n25", title: "魂の炎", cat: "nether", desc: "ソウルサンド峡谷でソウル・スピードのエンチャント本を見つける", icon: "Soul_Speed_Boots", 
+          strat: "ピグリンとの物々交換や、荒廃した要塞のチェストから入手します。", 
+          steps: ["ピグリンから**ソウル・スピードのエンチャント本**を入手する。"] 
+        },
+        { id: "n26", title: "ホット・コンディション", cat: "nether", desc: "ネザーで100ブロック以上移動する", icon: "Netherrack", 
+          strat: "ネザーに入り、移動を続けるだけで達成できます。", 
+          steps: ["ネザーで**100ブロック以上**歩き続ける。"] 
+        },
+
+// --- THE END (ジ・エンド) ---
+        { id: "e10", title: "エンドの解放", cat: "end", desc: "エンダードラゴンを倒す", icon: "Dragon_Head", 
+          strat: "まずは黒曜石の塔の上にある**エンドクリスタル**を破壊します。最強装備と弓矢を忘れずに。", 
+          steps: ["黒曜石の塔の上にある**エンドクリスタル**を弓矢で全て破壊する。", "ドラゴンが中央に降りてきたら、**剣**や**ベッド爆破**で攻撃する。", "討伐後、**ドラゴンの卵**を回収する。"] 
+        },
+        { id: "e11", title: "次の世代", cat: "end", desc: "ドラゴンの卵を手に入れる", icon: "Dragon_Egg", 
+          strat: "卵を直接叩くと**テレポート**してしまいます。壊さずに回収するには工夫が必要です。", 
+          steps: ["卵の真下のブロックを掘る。", "掘った穴に**松明**を設置する。", "卵を叩いて、松明の上に落とす（アイテム化する）。"] 
+        },
+        { id: "e12", title: "遠方への逃走", cat: "end", desc: "エンドゲートウェイからエンドの島々へ移動する", icon: "Ender_Pearl", 
+          strat: "ドラゴン討伐後に出現する**小さなポータル**に**エンダーパール**を投げ入れます。", 
+          steps: ["ドラゴンの討伐を完了する。", "出現した**エンドゲートウェイポータル**に**エンダーパール**を投げ入れてワープする。"] 
+        },
+        { id: "e13", title: "ゲームの果ての都市", cat: "end", desc: "エンドシティに入る", icon: "Purpur_Block", 
+          strat: "エンドの島々を探検し、**エンドシティ**と呼ばれる巨大な城のような構造物を見つけます。**エリトラ**があると探索が容易です。", 
+          steps: ["エンドの島々へ移動する。", "島々を移動しながら**エンドシティ**を探す。", "エンドシティの建物内に入る。"] 
+        },
+        { id: "e14", title: "空は限界だ", cat: "end", desc: "エリトラを見つける", icon: "Elytra", 
+          strat: "エンドシティに稀に生成される**エンドシップ**（船）の中にあります。**シュルカー**との戦闘の準備が必要です。", 
+          steps: ["エンドシティと**エンドシップ**を探す。", "エンドシップの内部に入り、額縁に飾られている**エリトラ**を回収する。"] 
+        },
+        { id: "e15", title: "リチャージ", cat: "end", desc: "エンドクリスタルを再生成する", icon: "End_Crystal", 
+          strat: "**ドラゴンの卵**を回収した後、**黒曜石の台座**の周りにガラス、ガストの涙、エンダーアイを使って**エンドクリスタル**を4個作成し、設置します。エンダードラゴンが復活します。", 
+          steps: ["**ドラゴンの卵**を回収する。", "卵があった黒曜石の台座の四方に**エンドクリスタル**を設置する。", "エンダードラゴンが復活したら達成。"] 
+        },
+
+// --- ADVENTURE (冒険) ---
+        { id: "a10", title: "自ら招いた追放", cat: "adventure", desc: "襲撃隊の旗持ちを倒す（不吉な予感を得る）", icon: "Ominous_Banner", 
+          strat: "**ピリジャーの前哨基地**や**パトロール隊**にいる旗を持った敵（リーダー）を倒すと、**不吉な予感**効果が付与されます。", 
+          steps: ["**旗を持ったピリジャー**（リーダー）を探す。", "リーダーを倒し、**不吉な予感**効果（Bad Omen）を得る。"] 
+        },
+        { id: "a11", title: "モンスターハンター", cat: "adventure", desc: "敵対的なモンスターを倒す", icon: "Iron_Sword", 
+          strat: "ゾンビ、スケルトン、クリーパー、スパイダーなどの敵対的なモブを倒せば達成です。最初の夜に達成できるでしょう。", 
+          steps: ["敵対的なモブ（例：ゾンビ）を倒す。"] 
+        },
+        { id: "a12", title: "取引成立", cat: "adventure", desc: "村人と取引する", icon: "Emerald", 
+          strat: "**エメラルド**を使って村人と何かを交換します。紙や石炭などをエメラルドに交換してもOK。", 
+          steps: ["村人を探す。", "エメラルドを使って、村人と**取引**を行う。"] 
+        },
+        { id: "a13", title: "粘着質な状況", cat: "adventure", desc: "ハチミツブロックに飛び込んで落下の勢いを消す", icon: "Honey_Block", 
+          strat: "高い場所から**ハチミツブロック**の**側面**に向かって飛び込み、ブロックを滑り降りることで、落下ダメージを無効化すると達成です。", 
+          steps: ["ハチミツブロックを作成する。", "高い場所からハチミツブロックの**側面**に向かってジャンプし、滑り降りる。"] 
+        },
+        { id: "a14", title: "スナイパー対決", cat: "adventure", desc: "50m以上離れたスケルトンを弓矢で倒す", icon: "Bow", 
+          strat: "ターゲットのスケルトンと**50ブロック以上**離れて狙撃します。相手を**ボート**や**トロッコ**に閉じ込めて固定すると簡単です。", 
+          steps: ["スケルトンをボートなどに閉じ込めて固定する。", "スケルトンから**50ブロック以上**離れた場所に移動する。", "弓矢で倒す。"] 
+        },
+        { id: "a15", title: "とてつもない", cat: "adventure", desc: "ガストの火の玉をくらわずにクロスボウで倒す", icon: "Crossbow", 
+          strat: "**クロスボウ**に**マルチショット**などのエンチャントを付け、遠距離から狙い撃ちます。ガストの射程外からの攻撃が安全です。", 
+          steps: ["クロスボウを用意する。", "ガストに遭遇する（ネザー）。", "ガストの火の玉を避けながら、クロスボウで倒す。"] 
+        },
+        { id: "a16", title: "冒険の時間", cat: "adventure", desc: "すべてのバイオームを発見する", icon: "Diamond_Boots", 
+          strat: "全**52種類**以上のバイオームに足を踏み入れる必要があります。**エリトラ**と**ロケット花火**を使った空の旅が最も効率的です。", 
+          steps: ["**エリトラ**と**ロケット花火**を用意し、広大な地図を準備する。", "未踏のバイオームを探し、一つ一つ足を踏み入れていく（F3キーで確認）。"] 
+        },
+        { id: "a17", title: "最も強い力", cat: "adventure", desc: "ウィザーを召喚する", icon: "Wither_Skeleton_Skull", 
+          strat: "**ソウルサンド4個**と**ウィザースケルトンの頭蓋骨3個**をT字に配置します。召喚後、爆発するので注意。", 
+          steps: ["ソウルサンド4個とウィザースケルトンの頭蓋骨3個を集める。", "T字型にソウルサンドを配置し、上に頭蓋骨を3つ並べる。"] 
+        },
+        { id: "a18", title: "ウィザーを撃破", cat: "adventure", desc: "ウィザーを倒す", icon: "Nether_Star", 
+          strat: "ウィザーは非常に強力です。**岩盤の下**など、動きを封じられる閉鎖された空間で戦うのが定石です。", 
+          steps: ["**最強装備**と**金リンゴ**、**ポーション**を用意する。", "地下深くの閉鎖空間にウィザーを誘導するか、そこで召喚する。", "ウィザーを倒す。"] 
+        },
+        { id: "a19", title: "シュルカーを討伐", cat: "adventure", desc: "シュルカーを倒す", icon: "Shulker_Shell", 
+          strat: "**エンドシティ**にいる敵です。攻撃を受けると**浮遊効果**が付与されるため、水バケツなどで落下ダメージを防ぐ準備が必要です。", 
+          steps: ["エンドシティを探す。", "**シュルカー**を見つける。", "シュルカーを倒す。"] 
+        },
+        { id: "a20", title: "フリーランサー", cat: "adventure", desc: "足場を壊さずに水中の呼吸と水中採掘で海底遺跡を探す", icon: "Conduit", 
+          strat: "**コンジットのパワー**（水中呼吸と水中採掘の速度アップ）があると楽になります。**暖かい海**の遺跡がターゲットです。", 
+          steps: ["水中呼吸のポーションか**コンジット**を用意する。", "**暖かい海**の**海底遺跡**を探す。", "遺跡に入ると達成。"] 
+        },
+        { id: "a21", title: "避けられない出来事", cat: "adventure", desc: "不吉な予感の影響下で村へ入る", icon: "Milk_Bucket", 
+          strat: "旗持ちリーダーを倒して**不吉な予感**効果を受けた状態で村に足を踏み入れます。襲撃イベントが開始します。牛乳を飲むと効果が消えるので注意。", 
+          steps: ["旗持ちリーダーを倒して**不吉な予感**を得る。", "村の境界線に入る。"] 
+        },
+        { id: "a22", title: "村の英雄", cat: "adventure", desc: "襲撃を撃退する", icon: "Totem_of_Undying", 
+          strat: "襲撃イベントで出現するすべての敵（ピリジャー、ヴィンディケーターなど）を倒します。レベルに応じて**村人との取引が安く**なります。", 
+          steps: ["襲撃イベントを発生させる。", "全ての敵を倒し、襲撃をクリアする。"] 
+        },
+        { id: "a23", title: "二匹ずつ", cat: "adventure", desc: "ボートで移動できるすべてのモブを運ぶ", icon: "Boat", 
+          strat: "ボートにモブを乗せ、水路で移動させます。ウシ、ブタ、ヒツジ、ニワトリ、村人など、**様々なモブ**をボートに乗せて少し移動させます。", 
+          steps: ["ボートを作り、**繁殖可能な動物**や**村人**などを乗せて少し移動させる。"] 
+        },
+        { id: "a24", title: "音の静寂", cat: "adventure", desc: "スケルトンホースに乗る", icon: "Saddle", 
+          strat: "雷雨時に稀に出現する**スケルトンホースの罠**を起動し、出現したスケルトンを倒します。サドルなしで乗れます。", 
+          steps: ["雷雨時に出現する**スケルトンホースの罠**を起動する。", "出現したスケルトンを倒し、**スケルトンホース**にサドル無しで乗る。"] 
+        },
+        { id: "a25", title: "船長！", cat: "adventure", desc: "ボートに乗って海を渡る", icon: "Boat", 
+          strat: "ボートに乗って海を航海します。大陸から離れた外洋へ出れば達成です。", 
+          steps: ["ボートを作る。", "海に乗り出し、**少し航海**する。"] 
+        },
+        { id: "a26", title: "氷の街", cat: "adventure", desc: "氷山のバイオームを探す", icon: "Packed_Ice", 
+          strat: "凍った海バイオームにある巨大な氷の塊（氷山）を見つけます。バイオームに足を踏み入れる必要があります。", 
+          steps: ["**凍った海バイオーム**を探す。", "氷山が生成されている場所で歩く。"] 
+        },
+        { id: "a27", title: "フリーランサー", cat: "adventure", desc: "足場を壊さずに水中の呼吸と水中採掘で海底遺跡を探す", icon: "Conduit", 
+          strat: "**水中の呼吸ポーション**や**コンジットのパワー**があると楽になります。暖かい海で見つかります。", 
+          steps: ["水中呼吸ポーションを飲むか、コンジットを設置する。", "**暖かい海**の**海底遺跡**を見つける。"] 
+        },
+        { id: "a28", title: "避雷針の役割", cat: "adventure", desc: "村人の近くに雷を誘導する", icon: "Lightning_Rod", 
+          strat: "嵐の日に村人の近くに避雷針を設置し、雷が落ちるのを待ちます。成功すると村人が魔女に変わることがあります。", 
+          steps: ["村人の近くに**避雷針**を設置する。", "嵐の日に雷が落ちるのを待つ。"] 
+        },
+        { id: "a29", title: "最高の音楽", cat: "adventure", desc: "ウォーデンの近くでジュークボックスから音楽を流す", icon: "Jukebox", 
+          strat: "古代の都市で**ウォーデン**を出現させ、**音楽ディスク**を持ってジュークボックスを設置し、再生します。", 
+          steps: ["古代の都市でウォーデンを出現させる。", "ウォーデンを刺激しないよう注意しながら**ジュークボックス**と**音楽ディスク**を使う。"] 
+        },
+        { id: "a30", title: "音の沈黙", cat: "adventure", desc: "ウールブロックを使ってウォーデンの攻撃を防ぐ", icon: "Wool", 
+          strat: "ウォーデンは音に反応するため、**ウールブロック**で音を遮断して移動します。**スニーク移動**も必須です。", 
+          steps: ["ウォーデンを出現させる。", "**ウールブロック**を足元に敷き詰め、音を立てずにウォーデンから逃げる。"] 
+        },
+
+// --- HUSBANDRY (農業・動物) ---
+        { id: "h10", title: "お客様にはハチを", cat: "husbandry", desc: "焚き火を利用してハチの巣からハチミツを回収する", icon: "Honey_Bottle", 
+          strat: "**ハチの巣**の下に**焚き火**を置くと、ハチが怒らずにハチミツを採取できます。ガラス瓶が必要です。", 
+          steps: ["ハチの巣（またはハチの養蜂箱）の下に**焚き火**を置く。", "巣が満タンになったら、**ガラス瓶**を使い**ハチミツ**を回収する。"] 
+        },
+        { id: "h11", title: "コウノトリの贈り物", cat: "husbandry", desc: "動物を繁殖させる", icon: "Wheat", 
+          strat: "牛には小麦、豚にはニンジン、羊には小麦など、それぞれのモブが好む餌を与えて繁殖させます。", 
+          steps: ["同じ種類のモブを2匹見つけ、繁殖に必要な餌を与える。", "子供が生まれたら達成。"] 
+        },
+        { id: "h12", title: "永遠の親友", cat: "husbandry", desc: "動物を手なずける", icon: "Bone", 
+          strat: "オオカミに骨を与える、ヤマネコに生魚を与える、馬に騎乗するなど、友好モブを**手なずけ**て懐かせます。", 
+          steps: ["手なずけたいモブに近づく。", "手なずけに必要なアイテム（骨など）を繰り返し与える。"] 
+        },
+        { id: "h13", title: "種だらけの場所", cat: "husbandry", desc: "種を植えて成長を見守る", icon: "Wheat_Seeds", 
+          strat: "クワで耕した土に**小麦の種**を植えます。骨粉を使うとすぐに成長します。", 
+          steps: ["クワで土を耕し、水を確保する。", "**小麦の種**を植える。", "成長して収穫できるまで待つ。"] 
+        },
+        { id: "h14", title: "バランスの取れた食事", cat: "husbandry", desc: "食べられるものをすべて食べる", icon: "Apple", 
+          strat: "ゲーム内の**すべての食料（約40種類以上）**を一度は食べます。**腐った肉、フグ、毒ジャガイモ、コーラスフルーツ**なども含まれるため、準備が必要です。", 
+          steps: ["食べられるアイテムのリストを作成する。", "すべてのアイテムを入手し、すべて食べる。"] 
+        },
+        { id: "h15", title: "輝くものすべて", cat: "husbandry", desc: "発光するイカ墨を使って看板の文字を光らせる", icon: "Glow_Ink_Sac", 
+          strat: "**発光するイカ**を倒して**発光するイカ墨**を入手し、看板の文字に使うと達成です。", 
+          steps: ["発光するイカを倒して**発光するイカ墨**を入手する。", "看板に文字を書き、イカ墨を使って文字を光らせる。"] 
+        },
+        { id: "h16", title: "二匹ずつ", cat: "husbandry", desc: "すべての繁殖可能なモブを繁殖させる", icon: "Mutton", 
+          strat: "牛、豚、羊、馬、ラマ、キノコ牛、カメ、キツネなど、**すべての繁殖可能なモブ**を繁殖させます。", 
+          steps: ["繁殖可能な動物リストを確認する。", "それぞれの動物に餌を与え、繁殖させる。"] 
+        },
+        { id: "h17", title: "タートルマスター", cat: "husbandry", desc: "カメの卵を孵化させる", icon: "Scute", 
+          strat: "カメに**海草**を与えて卵を産ませ、孵化させます。卵は**保護**しないと壊れやすいです。", 
+          steps: ["カメに**海草**を与えて卵を産ませる。", "卵をフェンスなどで保護し、**孵化**を待つ（時間がかかります）。"] 
+        },
+        { id: "h18", title: "スイート・ドリーム", cat: "husbandry", desc: "ハチミツ瓶で毒を治す", icon: "Honey_Bottle", 
+          strat: "ハチミツ瓶を飲むと、毒やウィザー効果を治せます。毒状態になったらすぐに飲みましょう。", 
+          steps: ["ハチミツ瓶を用意する。", "クモや洞窟グモの**毒**を受けた状態でハチミツ瓶を飲む。"] 
+        },
+        { id: "h19", title: "ネコ好き", cat: "husbandry", desc: "すべての種類のネコを手なずける", icon: "Cod", 
+          strat: "世界中にいる**11種類**のネコすべてを手なずける必要があります。村や沼地で見つかります。", 
+          steps: ["**生魚（タラや鮭）**を大量に用意する。", "村や沼地で様々な模様のネコを探し、すべて手なずける。"] 
+        },
+        { id: "h20", title: "熱帯魚のバケツ", cat: "husbandry", desc: "熱帯魚をバケツに入れる", icon: "Tropical_Fish_Bucket", 
+          strat: "水中の**熱帯魚**に**バケツ**を使用します。バケツを持って右クリックです。", 
+          steps: ["バケツを作成し、水を入れる。", "熱帯魚を見つけ、バケツで捕獲する。"] 
+        },
+        { id: "h21", title: "羊皮紙", cat: "husbandry", desc: "羊に色を塗る", icon: "Dye", 
+          strat: "染料を持って羊を右クリックします。**16色すべて**の羊毛を染める必要はありません。", 
+          steps: ["染料を作成する。", "羊に染料を使う。"] 
+        },
+        { id: "h22", title: "二匹ずつ", cat: "husbandry", desc: "すべての繁殖可能なモブを繁殖させる", icon: "Mutton", 
+          strat: "牛、豚、羊、鶏、馬、ロバ、ラマ、カメ、キツネなど、繁殖可能な全ての動物を繁殖させます。", 
+          steps: ["繁殖可能な動物リストを確認する。", "それぞれの動物に餌を与え、繁殖させる。"] 
+        },
+        { id: "h23", title: "タートルマスター", cat: "husbandry", desc: "カメの卵を孵化させる", icon: "Scute", 
+          strat: "カメに海草を与えて卵を産ませ、孵化させます。卵は非常に壊れやすく、モンスターに襲われるため、保護が必要です。", 
+          steps: ["カメに海草を与えて卵を産ませる。", "卵をフェンスなどで保護し、孵化を待つ。"] 
+        },
+        { id: "h24", title: "スイート・ドリーム", cat: "husbandry", desc: "ハチミツ瓶で毒を治す", icon: "Honey_Bottle", 
+          strat: "ハチミツ瓶を飲むと、毒やウィザー効果を治せます。", 
+          steps: ["ハチミツ瓶を用意する。", "毒を受けた状態でハチミツ瓶を飲む。"] 
+        },
+        { id: "h25", title: "ネコ好き", cat: "husbandry", desc: "すべての種類のネコを手なずける", icon: "Cod", 
+          strat: "世界中にいる11種類のネコすべてを手なずける必要があります。", 
+          steps: ["生魚（タラや鮭）を大量に用意する。", "村で様々な模様のネコを探し、手なずける。"] 
+        },
+        { id: "h26", title: "熱帯魚のバケツ", cat: "husbandry", desc: "熱帯魚をバケツに入れる", icon: "Tropical_Fish_Bucket", 
+          strat: "水中の熱帯魚にバケツを使用します。", 
+          steps: ["バケツを作成し、水を入れる。", "熱帯魚を見つけ、バケツで捕獲する。"] 
+        },
+        { id: "h27", title: "羊皮紙", cat: "husbandry", desc: "羊に色を塗る", icon: "Dye", 
+          strat: "染料を持って羊を右クリックします。", 
+          steps: ["染料を作成する。", "羊に染料を使う。"] 
+        },
+        { id: "h28", title: "完全な農夫", cat: "husbandry", desc: "すべての作物と野菜を育てる", icon: "Carrot", 
+          strat: "小麦、ニンジン、ジャガイモ、カボチャ、スイカ、サトウキビ、ビートルート、カカオ豆、キノコなど、すべての栽培可能な植物を育てます。", 
+          steps: ["すべての作物の種や苗、球根を入手する。", "耕地に植えて収穫できるまで育てる。"] 
+        },
+
+// --- CHALLENGE (最終挑戦) ---
+        { 
+            id: "c1", 
+            title: "どうやってここまで", 
+            cat: "nether", 
+            desc: "同時にすべてのポーション効果を持つ", 
+            icon: "Potion", 
+            strat: "ウィザー、コンジット、ビーコン、ポーション、敵の攻撃などを組み合わせて、**26種類以上のポーション効果**を同時に受ける必要があります。計画的な準備が必須の、ゲームで最も難しい進捗です。", 
+            steps: [
+                "**ビーコン**を最大レベル（パワー4）で設置し、主要なバフ（スピード、ジャンプなど）を得る。", 
+                "**ウィザー**を倒して**ネザースター**を入手し、ビーコンを起動する。",
+                "**コンジット**を設置し、水中呼吸と暗視を得る。",
+                "**ポーション**（弱体化、再生、耐火、力のポーションなど）を準備する。",
+                "**食料**（飽和、金のリンゴなど）で効果を得る。",
+                "**特殊なモブ**（ストレイの矢で鈍化、毒グモで毒、ウィザーの攻撃でウィザー効果）を利用する。",
+                "事前に効果時間を計算し、すべてが重なる**数秒間**を作り出す。"
+            ]
+        },
+
+// --- CHALLENGE (最終挑戦) - 追加分 ---
+        { 
+            id: "c2", 
+            title: "根気よく！", 
+            cat: "end", 
+            desc: "エンドの島々にあるすべての構造物（コーラスツリー、エンドシティ、エンドシップ）を訪れる", 
+            icon: "Chorus_Fruit", 
+            strat: "エリトラとロケット花火を用意し、エンドシティやエンドシップを見つけ、隅々まで探索します。", 
+            steps: [
+                "エンドの島々へ移動する。", 
+                "エリトラを使って遠くまで飛び、エンドシティ（船付き、船なし）を複数見つける。",
+                "巨大な**コーラスツリー**が密集したエリアを見つける。"
+            ]
+        },
+        { 
+            id: "c3", 
+            title: "モンスター・ハンター", 
+            cat: "adventure", 
+            desc: "すべての敵対的なモブを倒す", 
+            icon: "Iron_Sword", 
+            strat: "オーバーワールド、ネザー、エンド、そしてディープダークに存在するすべての敵対モブ（ウォーデン、ウィザー含む）を一度は倒す必要があります。", 
+            steps: [
+                "敵対モブのチェックリストを作成する。", 
+                "特にレアなモブ（エルダーガーディアン、ウィザー、ウォーデン）の討伐準備を整える。",
+                "すべてのモブを討伐する。"
+            ]
+        },
+        { 
+            id: "c4", 
+            title: "ハードコア・グルメ", 
+            cat: "husbandry", 
+            desc: "食べられるものをすべて食べる", 
+            icon: "Apple", 
+            strat: "腐った肉、フグ、毒ジャガイモなどの危険な食料も含め、全**40種類以上**の食料を食べる必要があります。牛乳バケツを用意しておきましょう。", 
+            steps: [
+                "すべての食料アイテム（ポーション効果があるものも含む）をリストアップする。", 
+                "食べる前に、毒や効果を打ち消すための**牛乳バケツ**を用意する。",
+                "全てのアイテムを一度食べる。"
+            ]
+        }    
+];
+
+    // アイコンのベースURL (Minecraft Wikiの画像構造を利用)
+    const iconBase = "https://minecraft.wiki/images/Invicon_";
+
+    const grid = document.getElementById('grid');
+    const modal = document.getElementById('modal');
+
+    // 初期化
+    renderAchievements('all');
+
+    function renderAchievements(filter) {
+        grid.innerHTML = '';
+        achievements.forEach(item => {
+            if (filter === 'all' || item.cat === filter) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-cat', item.cat);
+                card.onclick = () => openModal(item);
+                
+                // 画像URL生成ロジック (Wikiの命名規則に簡易対応)
+                // 本番環境では自分のサーバーの画像パスを指定することを推奨
+                let imgUrl = `${iconBase}${item.icon}.png`;
+                if(item.icon.includes("http")) imgUrl = item.icon; // 直リンク対応
+
+                card.innerHTML = `
+                    <div class="icon-wrapper">
+                        <img src="${imgUrl}" alt="" onerror="this.src='https://minecraft.wiki/images/Invicon_Grass_Block.png'">
+                    </div>
+                    <div class="info">
+                        <h3>${item.title}</h3>
+                        <p>${item.desc}</p>
+                    </div>
+                    <span class="badge" style="background:${getColor(item.cat)}">${getCatName(item.cat)}</span>
+                `;
+                grid.appendChild(card);
+            }
+        });
+    }
+
+    function filterSelection(category) {
+        const btns = document.querySelectorAll('.filter-btn');
+        btns.forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.filter-btn.${category}`).classList.add('active');
+        renderAchievements(category);
+    }
+
+    function openModal(item) {
+        document.getElementById('mTitle').innerHTML = item.title;
+        document.getElementById('mDesc').innerText = item.desc;
+        document.getElementById('mStrategy').innerText = item.strat;
+        
+        // カテゴリごとの色をボーダーに適用
+        document.querySelector('.strategy-section').style.borderLeftColor = getColor(item.cat);
+        
+        modal.classList.add('show');
+    }
+
+    function closeModal() {
+        modal.classList.remove('show');
+    }
+
+    window.onclick = function(ev) {
+        if (ev.target == modal) closeModal();
+    }
+
+    // ヘルパー関数
+    function getColor(cat) {
+        if(cat === 'story') return '#56ae38';
+        if(cat === 'nether') return '#d32f2f';
+        if(cat === 'end') return '#ab47bc';
+        if(cat === 'adventure') return '#0288d1';
+        if(cat === 'husbandry') return '#fbc02d';
+        return '#777';
+    }
+    
+    function getCatName(cat) {
+        if(cat === 'story') return 'MC';
+        if(cat === 'nether') return 'Nether';
+        if(cat === 'end') return 'End';
+        if(cat === 'adventure') return 'Adv';
+        if(cat === 'husbandry') return 'Farm';
+        return '';
+    }
+
+</script>
+
+</body>
+</html>
